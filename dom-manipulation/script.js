@@ -1,49 +1,39 @@
-// Array of quotes
+// Array of quote objects
 let quotes = [
   { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
   { text: "Don't let yesterday take up too much of today.", category: "Inspiration" },
   { text: "You learn more from failure than from success.", category: "Life" }
 ];
 
-// DOM elements
-const quoteDisplay = document.getElementById('quoteDisplay');
-const newQuoteBtn = document.getElementById('newQuote');
-const newQuoteText = document.getElementById('newQuoteText');
-const newQuoteCategory = document.getElementById('newQuoteCategory');
-
 // Function to display a random quote
 function displayRandomQuote() {
   if (quotes.length === 0) {
-    quoteDisplay.textContent = "No quotes available.";
+    document.getElementById("quoteDisplay").innerHTML = "No quotes available.";
     return;
   }
-
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-  quoteDisplay.textContent = `"${quote.text}" — ${quote.category}`;
+  document.getElementById("quoteDisplay").innerHTML = `"${quote.text}" — ${quote.category}`;
 }
 
 // Function to add a new quote
 function addQuote() {
-  const text = newQuoteText.value.trim();
-  const category = newQuoteCategory.value.trim();
+  const newQuoteText = document.getElementById("newQuoteText").value.trim();
+  const newQuoteCategory = document.getElementById("newQuoteCategory").value.trim();
 
-  if (text === "" || category === "") {
+  if (!newQuoteText || !newQuoteCategory) {
     alert("Please enter both quote text and category.");
     return;
   }
 
-  const newQuote = { text, category };
-  quotes.push(newQuote);
+  quotes.push({ text: newQuoteText, category: newQuoteCategory });
 
   // Clear input fields
-  newQuoteText.value = "";
-  newQuoteCategory.value = "";
+  document.getElementById("newQuoteText").value = "";
+  document.getElementById("newQuoteCategory").value = "";
 
-  // Update displayed quote
   displayRandomQuote();
-  alert("Quote added successfully!");
 }
 
-// Event listener for "Show New Quote" button
-newQuoteBtn.addEventListener('click', displayRandomQuote);
+// Event listener for the "Show New Quote" button
+document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
