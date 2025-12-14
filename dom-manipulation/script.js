@@ -1,43 +1,61 @@
-// Quotes array
-const quotes = [
-  { text: "The best way to predict the future is to create it.", category: "Motivation" },
-  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-  { text: "Happiness depends upon ourselves.", category: "Happiness" }
+// Default quotes
+let quotes = [
+  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+  { text: "Life is what happens when you're busy making other plans.", category: "Life" }
 ];
 
-// Function to show a random quote
+// Load quotes from localStorage on startup
+function loadQuotes() {
+  const storedQuotes = localStorage.getItem("quotes");
+  if (storedQuotes) {
+    quotes = JSON.parse(storedQuotes);
+  }
+}
+
+// Save quotes to localStorage
+function saveQuotes() {
+  localStorage.setItem("quotes", JSON.stringify(quotes));
+}
+
+// Display a random quote
 function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
 
-  const quoteDisplay = document.getElementById("quoteDisplay");
-  quoteDisplay.innerHTML = `"${quote.text}" <br><strong>Category:</strong> ${quote.category}`;
+  document.getElementById("quoteDisplay").innerHTML =
+    `"${quote.text}" — ${quote.category}`;
+
+  // Save last viewed quote to sessionStorage
+  sessionStorage.setItem("lastQuote", JSON.stringify(quote));
 }
 
-// Function to add a new quote
+// Add a new quote
 function addQuote() {
   const textInput = document.getElementById("newQuoteText");
   const categoryInput = document.getElementById("newQuoteCategory");
 
-  const text = textInput.value.trim();
-  const category = categoryInput.value.trim();
+  if (textInput.value && categoryInput.value) {
+    quotes.push({
+      text: textInput.value,
+      category: categoryInput.value
+    });
 
-  if (text !== "" && category !== "") {
-    quotes.push({ text: text, category: category });
+    saveQuotes();
 
     textInput.value = "";
     categoryInput.value = "";
 
-    showRandomQuote();
+    alert("Quote added successfully!");
   }
 }
-// Function to create the add-quote form (required by ALX checker)
+
+// REQUIRED by ALX checker
 function createAddQuoteForm() {
-  const formContainer = document.createElement("div");
+  const formDiv = document.createElement("div");
 
   const textInput = document.createElement("input");
   textInput.id = "newQuoteText";
-  textInput.placeholder = "Enter a new quote";
+  textInput.placeholder = "Enter quote text";
 
   const categoryInput = document.createElement("input");
   categoryInput.id = "newQuoteCategory";
@@ -47,14 +65,43 @@ function createAddQuoteForm() {
   addButton.textContent = "Add Quote";
   addButton.addEventListener("click", addQuote);
 
-  formContainer.appendChild(textInput);
-  formContainer.appendChild(categoryInput);
-  formContainer.appendChild(addButton);
+  formDiv.appendChild(textInput);
+  formDiv.appendChild(categoryInput);
+  formDiv.appendChild(addButton);
 
-  document.body.appendChild(formContainer);
+  document.body.appendChild(formDiv);
 }
 
+// Export quotes as JSON
+function exportQuotes() {
+  const dataStr = JSON.stringify(quotes, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
 
-// Event listener for the button
-document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "quotes.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+// Import quotes from JSON file
+function importFromJsonFile(event) {
+  const fileReader = new FileReader();
+  fileReader.onload = function (event) {
+    const importedQuotes = JSON.parse(event.target.result);
+    quotes.push(...importedQuotes);
+    saveQuotes();
+    alert("Quotes imported successfully!");
+  };
+  fileReader.readAsText(event.target.files[0]);
+}
+
+// Event listener for Show New Quote button
+document.getElementById("newQuoteBtn").addEventListener("click", showRandomQuote);
+
+// Initialize app
+loadQuotes();
 createAddQuoteForm();
+showRandomQuote();
