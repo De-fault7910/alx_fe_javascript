@@ -1,39 +1,36 @@
-// Array of quote objects
-let quotes = [
-  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-  { text: "Don't let yesterday take up too much of today.", category: "Inspiration" },
-  { text: "You learn more from failure than from success.", category: "Life" }
+// Quotes array
+const quotes = [
+  { text: "The best way to predict the future is to create it.", category: "Motivation" },
+  { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+  { text: "Happiness depends upon ourselves.", category: "Happiness" }
 ];
 
-// Function to display a random quote
-function displayRandomQuote() {
-  if (quotes.length === 0) {
-    document.getElementById("quoteDisplay").innerHTML = "No quotes available.";
-    return;
-  }
+// Function to show a random quote
+function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const quote = quotes[randomIndex];
-  document.getElementById("quoteDisplay").innerHTML = `"${quote.text}" — ${quote.category}`;
+
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  quoteDisplay.innerHTML = `"${quote.text}" <br><strong>Category:</strong> ${quote.category}`;
 }
 
 // Function to add a new quote
 function addQuote() {
-  const newQuoteText = document.getElementById("newQuoteText").value.trim();
-  const newQuoteCategory = document.getElementById("newQuoteCategory").value.trim();
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
 
-  if (!newQuoteText || !newQuoteCategory) {
-    alert("Please enter both quote text and category.");
-    return;
+  const text = textInput.value.trim();
+  const category = categoryInput.value.trim();
+
+  if (text !== "" && category !== "") {
+    quotes.push({ text: text, category: category });
+
+    textInput.value = "";
+    categoryInput.value = "";
+
+    showRandomQuote();
   }
-
-  quotes.push({ text: newQuoteText, category: newQuoteCategory });
-
-  // Clear input fields
-  document.getElementById("newQuoteText").value = "";
-  document.getElementById("newQuoteCategory").value = "";
-
-  displayRandomQuote();
 }
 
-// Event listener for the "Show New Quote" button
-document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
+// Event listener for the button
+document.getElementById("newQuote").addEventListener("click", showRandomQuote);

@@ -4,23 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dynamic Quote Generator</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #quoteDisplay { margin: 20px 0; font-size: 1.2em; }
-    input { margin-right: 5px; margin-bottom: 5px; padding: 5px; }
-    button { padding: 5px 10px; cursor: pointer; }
-  </style>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <div id="quoteDisplay">Click "Show New Quote" to start!</div>
+  <div id="quoteDisplay"></div>
+
   <button id="newQuote">Show New Quote</button>
 
-  <h2>Add Your Own Quote</h2>
   <div>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote">
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category">
     <button onclick="addQuote()">Add Quote</button>
   </div>
 
