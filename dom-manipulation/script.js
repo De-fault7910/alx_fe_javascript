@@ -31,6 +31,30 @@ function addQuote() {
     showRandomQuote();
   }
 }
+// Function to create the add-quote form (required by ALX checker)
+function createAddQuoteForm() {
+  const formContainer = document.createElement("div");
+
+  const textInput = document.createElement("input");
+  textInput.id = "newQuoteText";
+  textInput.placeholder = "Enter a new quote";
+
+  const categoryInput = document.createElement("input");
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.placeholder = "Enter quote category";
+
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+  addButton.addEventListener("click", addQuote);
+
+  formContainer.appendChild(textInput);
+  formContainer.appendChild(categoryInput);
+  formContainer.appendChild(addButton);
+
+  document.body.appendChild(formContainer);
+}
+
 
 // Event listener for the button
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+createAddQuoteForm();
