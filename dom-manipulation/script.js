@@ -21,7 +21,6 @@ const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 async function fetchQuotesFromServer() {
   const response = await fetch(SERVER_URL);
   const data = await response.json();
-
   return data.slice(0, 5).map(post => ({
     text: post.title,
     category: "Server"
@@ -91,11 +90,9 @@ function createAddQuoteForm() {
 function addQuote() {
   const text = document.getElementById("newQuoteText").value;
   const category = document.getElementById("newQuoteCategory").value;
-
   if (!text || !category) return;
 
   const newQuote = { text, category };
-
   quotes.push(newQuote);
   saveQuotes();
   populateCategories();
@@ -109,7 +106,6 @@ function populateCategories() {
   const categories = [...new Set(quotes.map(q => q.category))];
 
   select.innerHTML = '<option value="all">All Categories</option>';
-
   categories.forEach(cat => {
     const option = document.createElement("option");
     option.value = cat;
@@ -159,8 +155,7 @@ function importFromJsonFile(event) {
 
 /* ---------- EVENTS ---------- */
 
-document
-  .getElementById("newQuoteBtn")
+document.getElementById("newQuoteBtn")
   .addEventListener("click", showRandomQuote);
 
 /* ---------- INIT ---------- */
@@ -169,3 +164,4 @@ loadQuotes();
 populateCategories();
 createAddQuoteForm();
 showRandomQuote();
+syncQuotes();
